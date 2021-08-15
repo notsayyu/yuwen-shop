@@ -17,12 +17,15 @@ import javax.persistence.Table;
 @Table(name = "users")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
     @Column(name = "username", nullable = false, columnDefinition = "varchar(20) comment '用户名'")
     private String username;
 
     @Column(name = "mobile", nullable = false, columnDefinition = "varchar(11) comment '手机号'")
     private String mobile;
+
+    @Column(name = "pwd", nullable = false, columnDefinition = "varchar(255) comment '密码'")
+    private String pwd;
 
     /**
      * {@link UserRoleEnum}

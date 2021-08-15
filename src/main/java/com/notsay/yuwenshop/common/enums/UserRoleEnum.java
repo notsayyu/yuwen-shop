@@ -2,6 +2,9 @@ package com.notsay.yuwenshop.common.enums;
 
 import lombok.Getter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @description:
  * @author: dsy
@@ -24,7 +27,7 @@ public enum UserRoleEnum {
      */
     BUSINESS(3, "商家"),
 
-    ;
+    UNKNOWN(99, "未知");
 
     /**
      *
@@ -36,5 +39,17 @@ public enum UserRoleEnum {
     UserRoleEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
+    }
+
+    public static Map<Integer, UserRoleEnum> CODE_MAP = new HashMap<>();
+
+    static {
+        for (UserRoleEnum userRoleEnum : UserRoleEnum.values()) {
+            CODE_MAP.put(userRoleEnum.getCode(), userRoleEnum);
+        }
+    }
+
+    public static UserRoleEnum getRoleByCode(Integer code) {
+        return CODE_MAP.getOrDefault(code, UNKNOWN);
     }
 }
