@@ -3,8 +3,10 @@ package com.notsay.yuwenshop.common.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,20 +21,33 @@ import java.util.Collections;
  * @description:
  * @author: dsy
  * @date: 2021/8/15 15:02
+ * <p>
+ * EnableWebSecurity注解有两个作用,1: 加载了WebSecurityConfiguration配置类, 配置安全认证策略。
+ * 2: 加载了AuthenticationConfiguration, 配置了认证信息。
+ * <p>
+ * EnableWebSecurity注解有两个作用,1: 加载了WebSecurityConfiguration配置类, 配置安全认证策略。
+ * 2: 加载了AuthenticationConfiguration, 配置了认证信息。
+ * <p>
+ * EnableWebSecurity注解有两个作用,1: 加载了WebSecurityConfiguration配置类, 配置安全认证策略。
+ * 2: 加载了AuthenticationConfiguration, 配置了认证信息。
  */
-@Configuration
 /**
  * EnableWebSecurity注解有两个作用,1: 加载了WebSecurityConfiguration配置类, 配置安全认证策略。
  * 2: 加载了AuthenticationConfiguration, 配置了认证信息。
  */
-@EnableWebSecurity
+
 /**
  * https://blog.csdn.net/chihaihai/article/details/104678864
  */
+@Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    AuthenticationEntryPoint unauthorizedHandler;
 
     public static final String[] PERMIT_PATHS = new String[]{
             "/api/v1/auth/*",
@@ -45,8 +60,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatcher("/api/**")
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(PERMIT_PATHS).permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .cors()
+                .and()
+                //添加统一的异常处理
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .httpBasic().disable()
                 .csrf().disable()
@@ -59,6 +80,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/swagger-ui.html")
+                .antMatchers("/swagger/**")
+                .antMatchers("/swagger-ui/**");
+    }
 
     @Bean
     public CorsFilter corsFilter() {

@@ -8,16 +8,15 @@ import lombok.Data;
 
 @Data
 @Builder
-//@ApiModel(value = "基本返回")
 public class BaseResponse<T> {
 
-    //    @ApiModelProperty(value = "状态码")
+    //状态码
     private int code;
 
-    //    @ApiModelProperty(value = "消息")
+    //消息
     private String msg;
 
-    //    @ApiModelProperty(value = "数据")
+    //数据
     private T data;
 
     public BaseResponse(int code) {

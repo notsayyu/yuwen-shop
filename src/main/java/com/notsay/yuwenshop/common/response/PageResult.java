@@ -15,22 +15,18 @@ import java.util.List;
 @EqualsAndHashCode
 @AllArgsConstructor
 @SuppressWarnings("unchecked")
-//@ApiModel(value = "分页返回")
 public class PageResult<T> {
 
     /**
      * 总条数
      */
-//    @ApiModelProperty(value = "总条数")
     private long total;
 
     /**
      * 查出的资源条目数
      */
-//    @ApiModelProperty(value = "查出的资源条目数")
     private int count;
 
-    //    @ApiModelProperty(value = "数据")
     private List<T> items;
 
     public PageResult(long total, List items) {

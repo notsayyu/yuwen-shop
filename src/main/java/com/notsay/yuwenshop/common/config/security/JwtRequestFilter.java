@@ -54,6 +54,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             //解析BxmToken
             String headToken = httpServletRequest.getHeader(BaseConstants.TOKEN_HEAD_NAME);
             parseAndCheckToken(headToken);
+            //do filter
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
         } catch (Exception e) {
             log.info("解析token时发生错误", e);
             resolver.resolveException(httpServletRequest, httpServletResponse, null, e);
