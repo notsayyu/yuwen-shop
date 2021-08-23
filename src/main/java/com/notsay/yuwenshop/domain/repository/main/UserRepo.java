@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
  * @date: 2021/8/14 11:22
  */
 @Repository
-public interface UserRepo extends BaseRepo<UserEntity, Integer>{
+public interface UserRepo extends BaseRepo<UserEntity, Integer> {
+    UserEntity findByUsername(String username);
+    
 }

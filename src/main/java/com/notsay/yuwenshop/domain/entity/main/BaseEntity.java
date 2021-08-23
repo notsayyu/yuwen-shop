@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.OptimisticLocking;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Instant;
 
 /**
@@ -26,7 +27,7 @@ import java.time.Instant;
  * 否则，事务提交update并递增version的值。这种机制适用于读操作比更新或删除操作多得多的应用程序
  */
 @OptimisticLocking
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
     /**
      * @GeneratedValue：
      * @GeneratedValue 用于标注主键的生成策略，通过strategy 属性指定。默认情况下，JPA 自动选择一个最适合底层数据库的主键生成策略：SqlServer对应identity，MySQL 对应 auto increment。
@@ -59,15 +60,15 @@ public abstract class BaseEntity {
 
     @PrePersist
     public void beforeInsert() {
-        this.createdAt = Instant.now().toEpochMilli();
-        this.updatedAt = Instant.now().toEpochMilli();
-        this.version = 0;
-        this.deleted = false;
+        createdAt = Instant.now().toEpochMilli();
+        updatedAt = Instant.now().toEpochMilli();
+        version = 0;
+        deleted = false;
     }
 
     @PreUpdate
     public void beforeUpdate() {
-        this.updatedAt = Instant.now().toEpochMilli();
+        updatedAt = Instant.now().toEpochMilli();
     }
 
 }

@@ -24,3 +24,5 @@ https://www.cnblogs.com/cndarren/p/11518443.html
 
 参考链接：
 https://blog.csdn.net/qq_39361915/article/details/113261274
+
+4、引入国密加密SM3、SM4 参考之前写的项目
