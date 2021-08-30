@@ -26,3 +26,10 @@ https://www.cnblogs.com/cndarren/p/11518443.html
 https://blog.csdn.net/qq_39361915/article/details/113261274
 
 4、引入国密加密SM3、SM4 参考之前写的项目
+
+# 2021.08.30
+
+1、加入文件存储、下载和预览方法-磁盘方式，参考旧项目同事写的代码
+
+参考链接：
+https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Disposition

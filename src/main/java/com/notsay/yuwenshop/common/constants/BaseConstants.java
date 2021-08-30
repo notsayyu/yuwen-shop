@@ -12,4 +12,9 @@ public class BaseConstants {
      */
     public static final String TOKEN_HEAD_NAME = "Authorization";
 
+    /**
+     * 文件分隔符
+     */
+    public static final String FILE_SEPARATOR = ".";
+
 }

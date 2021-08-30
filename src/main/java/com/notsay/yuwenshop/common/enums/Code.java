@@ -44,10 +44,22 @@ public enum Code {
 
     HTTP_CONTENT_TYPE_NOT_SUPPORTED(1003, "不支持的Content-Type"),
 
+    /**
+     * 文件相关 1100-1199
+     */
+    FILE_ID_EXISTS(1100, "系统自动生成文件ID已存在, 系统异常"),
+
+    DISK_SAVE_ERROR(1101, "磁盘存储文件失败"),
+
+    FILE_NOT_EXIST(1102, "文件不存在"),
+
+    DISK_DOWNLOAD_ERROR(1103, "磁盘下载文件失败"),
+
+
     ;
 
-    private int code;
-    private String msg;
+    private final int code;
+    private final String msg;
 
     Code(int code, String msg) {
         this.code = code;
