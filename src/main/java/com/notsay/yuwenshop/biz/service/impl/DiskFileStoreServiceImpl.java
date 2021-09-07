@@ -7,6 +7,8 @@ import com.notsay.yuwenshop.common.excepion.BusinessException;
 import com.notsay.yuwenshop.common.properties.FileStoreProperties;
 import com.notsay.yuwenshop.common.utils.FileUtil;
 import com.notsay.yuwenshop.common.utils.UuidUtil;
+import com.notsay.yuwenshop.domain.entity.main.FileEntity;
+import com.notsay.yuwenshop.domain.repository.main.FileRepo;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -26,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
  * @description:
@@ -38,9 +41,11 @@ import java.nio.file.Paths;
 public class DiskFileStoreServiceImpl implements FileStoreService {
     private final String basePath;
     private final long maxFileSize;
+    private final FileRepo fileRepo;
 
-    public DiskFileStoreServiceImpl(FileStoreProperties fileStoreProperties, FileStoreProperties.DiskFileStoreProperties diskFileStoreProperties) throws IOException {
+    public DiskFileStoreServiceImpl(FileStoreProperties fileStoreProperties, FileStoreProperties.DiskFileStoreProperties diskFileStoreProperties, FileRepo fileRepo) throws IOException {
         basePath = diskFileStoreProperties.getDiskStoreBasePath();
+        this.fileRepo = fileRepo;
         String maxFileSizeStr = fileStoreProperties.getMaxFileSize();
         maxFileSize = DataSize.parse(maxFileSizeStr).toBytes();
         log.info("文件存储采用本地磁盘存储的方式, 文件存储路径为:[{}], 单文件最大大小为:[{}]", basePath, maxFileSizeStr);
@@ -78,11 +83,11 @@ public class DiskFileStoreServiceImpl implements FileStoreService {
     }
 
     @Override
-    public void downloadFile(String fileId, String fileOriginName, HttpServletResponse response) {
+    public void downloadFile(String fileKey, String fileOriginName, HttpServletResponse response) {
         try {
-            Path path = Paths.get(basePath, fileId);
+            Path path = Paths.get(basePath, fileKey);
             if (Files.notExists(path)) {
-                log.error("下载文件时, 文件id不存在, id为:[{}]", fileId);
+                log.error("下载文件时, 文件id不存在, id为:[{}]", fileKey);
                 throw new BusinessException(Code.FILE_ID_EXISTS);
             }
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -112,6 +117,27 @@ public class DiskFileStoreServiceImpl implements FileStoreService {
             IOUtils.copy(inputStream, outputStream);
         } catch (IOException e) {
             log.error("下载文件时发生io异常", e);
+            throw new BusinessException(Code.DISK_DOWNLOAD_ERROR);
+        }
+    }
+
+    @Override
+    public void deleteFile(String fileKey) {
+        Path path = Paths.get(basePath, fileKey);
+        if (Files.notExists(path)) {
+            log.error("删除文件时, 文件id不存在, id为:[{}]", fileKey);
+            throw new BusinessException(Code.FILE_NOT_EXIST);
+        }
+        try {
+            Files.delete(path);
+            FileEntity fileEntity = fileRepo.findByFileKey(fileKey);
+            if (Objects.isNull(fileEntity)) {
+                throw new BusinessException(Code.FILE_NOT_EXIST, "文件记录再数据库中不存在");
+            }
+            fileRepo.delete(fileEntity);
+
+        } catch (IOException e) {
+            log.error("删除文件时发生io异常", e);
             throw new BusinessException(Code.DISK_DOWNLOAD_ERROR);
         }
     }

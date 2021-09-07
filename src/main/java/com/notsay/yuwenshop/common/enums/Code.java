@@ -30,6 +30,8 @@ public enum Code {
 
     PARAM_ERROR(90, "参数异常"),
 
+    INIT_ERROR(999, "初始化错误"),
+
     /**
      * 用户相关 100-200
      */
@@ -54,6 +56,12 @@ public enum Code {
     FILE_NOT_EXIST(1102, "文件不存在"),
 
     DISK_DOWNLOAD_ERROR(1103, "磁盘下载文件失败"),
+
+    MINIO_UPLOAD_ERROR(1104, "minio上传文件失败"),
+
+    MINIO_DELETE_ERROR(1105, "minio删除文件失败"),
+
+    DISK_DELETE_ERROR(1106, "磁盘删除文件失败"),
 
 
     ;

@@ -30,6 +30,9 @@ import java.util.Collections;
  * <p>
  * EnableWebSecurity注解有两个作用,1: 加载了WebSecurityConfiguration配置类, 配置安全认证策略。
  * 2: 加载了AuthenticationConfiguration, 配置了认证信息。
+ * <p>
+ * EnableWebSecurity注解有两个作用,1: 加载了WebSecurityConfiguration配置类, 配置安全认证策略。
+ * 2: 加载了AuthenticationConfiguration, 配置了认证信息。
  */
 /**
  * EnableWebSecurity注解有两个作用,1: 加载了WebSecurityConfiguration配置类, 配置安全认证策略。
@@ -50,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     AuthenticationEntryPoint unauthorizedHandler;
 
     public static final String[] PERMIT_PATHS = new String[]{
-            "/api/v1/auth/*",
-            "/api/v1/test/*"
+            "/api/v1/auth/**",
+            "/api/v1/test/*/**"
     };
 
     @Override

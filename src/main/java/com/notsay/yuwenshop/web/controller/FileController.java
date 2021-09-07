@@ -41,7 +41,7 @@ public class FileController {
     @ApiOperation("上传文件")
     @PostMapping("/upload")
     public BaseResponse<FileStoreDTO> uploadFile(
-            @ApiParam("文件,使用表单形式,名称为file") @RequestPart("file") MultipartFile inputFile,
+            @ApiParam("文件,使用表单形式,名称为file") @RequestParam("file") MultipartFile inputFile,
             @ApiIgnore @AuthenticationPrincipal SecureUserInfo userInfo) {
         FileStoreDTO fileStoreDTO = fileStoreService.saveFile(inputFile);
         fileService.uploadFile(fileStoreDTO);
@@ -73,5 +73,11 @@ public class FileController {
         fileStoreService.previewFile(fileKey, fileEntity.getFileOriginName(), fileEntity.getByteSize(), response);
     }
 
-
+    @ApiOperation("删除文件")
+    @DeleteMapping("/delete")
+    public BaseResponse deleteFile(@ApiParam("文件key") @NotNull @Length(max = 100) @RequestParam String fileKey,
+                                   @ApiIgnore @AuthenticationPrincipal SecureUserInfo secureUser) {
+        fileStoreService.deleteFile(fileKey);
+        return BaseResponse.with(Code.SUCCESS);
+    }
 }

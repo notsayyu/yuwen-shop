@@ -53,6 +53,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         try {
             //解析BxmToken
             String headToken = httpServletRequest.getHeader(BaseConstants.TOKEN_HEAD_NAME);
+            log.info("token为:[{}]", headToken);
             parseAndCheckToken(headToken);
             //do filter
             filterChain.doFilter(httpServletRequest, httpServletResponse);

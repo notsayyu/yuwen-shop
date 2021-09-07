@@ -50,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         userEntity = UserEntity.builder()
+                .userCode("")
                 .username(param.getUsername())
                 .mobile(param.getMobile())
                 .pwd(Sm3Utils.encrypt(param.getPassword()))

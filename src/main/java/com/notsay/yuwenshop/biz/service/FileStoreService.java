@@ -19,9 +19,11 @@ import java.nio.charset.StandardCharsets;
 public interface FileStoreService {
     FileStoreDTO saveFile(MultipartFile inputFile);
 
-    void downloadFile(String fileId, String fileOriginName, HttpServletResponse response);
+    void downloadFile(String fileKey, String fileOriginName, HttpServletResponse response);
 
     void previewFile(String fileKey, String fileOriginName, Long byteSize, HttpServletResponse response);
+
+    void deleteFile(String fileKey);
 
     /**
      * 设置请求头, 根据文件类型进行设置

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
  * @author: dsy
  * @date: 2021/8/19 19:26
  */
-@ApiModel("注册参数")
+@ApiModel("登录参数")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

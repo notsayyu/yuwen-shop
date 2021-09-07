@@ -40,8 +40,8 @@ public class AuthController {
     @PostMapping("/login")
     @ApiOperation("登录")
     public BaseResponse<LoginVO> login(@RequestBody LoginParam param) {
-        authService.login(param);
-        return BaseResponse.with(Code.SUCCESS);
+
+        return BaseResponse.with(Code.SUCCESS, authService.login(param));
     }
 
 
